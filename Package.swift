@@ -17,6 +17,13 @@ let package = Package(
         .target(
             name: "GPUImage",
             path: "framework/Source",
-            exclude: ["Linux", "Operations/Shaders"])],
+            exclude: ["Linux", "Operations/Shaders"],
+            resources: [
+                .process("Operations/LookupImages/lookup_soft_elegance_1.png"),
+                .process("Operations/LookupImages/lookup.png"),
+                .process("Operations/LookupImages/lookup_soft_elegance_2.png"),
+                .process("Operations/LookupImages/lookup_miss_etikate.png"),
+                .process("Operations/LookupImages/lookup_amatorka.png")
+            ])],
     swiftLanguageVersions: [.v4_2]
 )
