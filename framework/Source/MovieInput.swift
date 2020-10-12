@@ -1,9 +1,15 @@
 import AVFoundation
 import Metal
 
+public protocol MovieInputDelegate: AnyObject {
+    func didFinishProcessing(_ movieInput: MovieInput)
+}
+
 public class MovieInput: ImageSource {
     public let targets = TargetContainer()
     public var runBenchmark = false
+
+    weak var delegate: MovieInputDelegate?
     
     var videoTextureCache: CVMetalTextureCache?
     let yuvConversionRenderPipelineState:MTLRenderPipelineState
@@ -91,7 +97,7 @@ public class MovieInput: ImageSource {
     }
     
     func endProcessing() {
-        
+        delegate?.didFinishProcessing(self)
     }
     
     // MARK: -
