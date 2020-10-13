@@ -126,12 +126,16 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         
         if captureAsYUV {
             supportsFullYUVRange = false
+            // This should be a bug of Xcode 12
+            // ref: https://stackoverflow.com/questions/63953256/xcode-12-value-of-type-avcapturephotooutput-has-no-member-supportedflashmode
+            #if !targetEnvironment(simulator)
             let supportedPixelFormats = videoOutput.availableVideoPixelFormatTypes
             for currentPixelFormat in supportedPixelFormats {
                 if ((currentPixelFormat as NSNumber).int32Value == Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)) {
                     supportsFullYUVRange = true
                 }
             }
+            #endif
             if (supportsFullYUVRange) {
                 let (pipelineState, lookupTable) = generateRenderPipelineState(device:sharedMetalRenderingDevice, vertexFunctionName:"twoInputVertex", fragmentFunctionName:"yuvConversionFullRangeFragment", operationName:"YUVToRGB")
                 self.yuvConversionRenderPipelineState = pipelineState
